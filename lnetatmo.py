@@ -171,6 +171,11 @@ class ClientAuth:
                 "scope" : scope
                 }
         resp = postRequest(_AUTH_REQ, postParams)
+
+        if resp is None:
+            msg = 'No response from Netatmo servers ... '
+            raise Exception( msg )
+
         self._clientId = clientId
         self._clientSecret = clientSecret
         self._accessToken = resp['access_token']
@@ -662,7 +667,8 @@ def postRequest(url, params=None, timeout=10):
             params = urllib.parse.urlencode(params).encode('utf-8')
         try:
             resp = urllib.request.urlopen(req, params, timeout=timeout) if params else urllib.request.urlopen(req, timeout=timeout)
-        except urllib.error.URLError:
+        except urllib.error.URLError as e:
+            print ( 'ERROR: got %s' % str(e) )
             return None
     else:
         if params:
@@ -671,7 +677,8 @@ def postRequest(url, params=None, timeout=10):
         req = urllib2.Request(url=url, data=params, headers=headers) if params else urllib2.Request(url)
         try:
             resp = urllib2.urlopen(req, timeout=timeout)
-        except urllib2.URLError:
+        except urllib2.URLError as e:
+            print ( 'ERROR: got %s' % str(e) )
             return None
     data = b""
     for buff in iter(lambda: resp.read(65535), b''): data += buff
