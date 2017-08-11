@@ -67,8 +67,31 @@ _CLIENT_SECRET = getParameter("CLIENT_SECRET", cred)
 _USERNAME      = getParameter("USERNAME", cred)
 _PASSWORD      = getParameter("PASSWORD", cred)
 
+
+#-ap: use netrc to get credentials ...
+import netrc
+nrc = netrc.netrc()
+(login, account, pwd) = nrc.authenticators('netatmoRdr')
+
+
+_CLIENT_ID     = account   # Your client ID from Netatmo app registration at http://dev.netatmo.com/dev/listapps
+_CLIENT_SECRET = login   # Your client app secret   '     '
+_USERNAME      = "apfeiffer1@gmail.com"      # Your netatmo account username
+_PASSWORD      = pwd     # Your netatmo account password
+
+
 #########################################################################
 
+#-ap
+# 
+# from Nov 30, 2016 on:
+# Replace Getthermstate with Getthermostatdata
+# Replace Getuser with Getthermostatdata, Gethomedata or Getstationsdata
+# Replace Devicelist with Getthermostatdata or Getstationsdata
+# 
+# see: https://dev.netatmo.com/dev/resources/technical/reference/weatherstation/getstationsdata
+#
+#-ap end
 
 # Common definitions
 
